@@ -1,7 +1,6 @@
 import psycopg2
 from fastapi import FastAPI
 from starlette import status
-
 conn = psycopg2.connect(
     host="localhost",
     port=5432,
@@ -14,7 +13,7 @@ cursor = conn.cursor()
 get_app = FastAPI()
 @get_app.get("/customer/{customer_id}")
 def get_customer(customer_id: int):
-    cursor.execute("SELECT * FROM customer WHERE id >= %s", (customer_id,))
+    cursor.execute("SELECT * FROM customer WHERE id = %s", (customer_id,))
 
     row = cursor.fetchall()
 
@@ -80,3 +79,7 @@ def get_customer_order(customer_id: str, required_date: date):
     cursor1.execute("SELECT customer_id, ship_name FROM orders WHERE customer_id = %s AND required_date = %s",
                     (customer_id, required_date))
     return cursor1.fetchall()
+
+
+
+
